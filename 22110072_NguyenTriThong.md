@@ -36,7 +36,8 @@ openssl rsa -in client_private_key.pem -pubout -out client_public_key.pem
 ```bash
 mv client_public_key.pem /shared/client_public_key.pem
 ```
-![public_key]()
+
+![public_key](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/public_key.png)
 
 ## 3. [Server] Generate and encrypt the challenge message:
 *Inside the server container, create the challenge message:*
@@ -51,7 +52,7 @@ echo "I keep floating down the river but the ocean never comes. Since the operat
 openssl pkeyutl -encrypt -inkey /shared/client_public_key.pem -pubin -in challenge.txt -out /shared/encrypted_challenge.bin
 ```
 
-![encrypted]()
+![encrypted](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/encrypted.png)
 
 ## 4. [Client] Decrypt and sign challenge:
 *Inside the client container, we decrypt the message using its private key:*
@@ -59,7 +60,7 @@ openssl pkeyutl -encrypt -inkey /shared/client_public_key.pem -pubin -in challen
 ```bash
 openssl pkeyutl -decrypt -inkey client_private_key.pem -in /shared/encrypted_challenge.bin -out decrypted_challenge.txt
 
-![decrypted]()
+![decrypted](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/decrypted.png)
 
 ```
 *Then, we sign the decrypted message using the its private key again:*
@@ -68,7 +69,7 @@ openssl pkeyutl -decrypt -inkey client_private_key.pem -in /shared/encrypted_cha
 openssl dgst -sha256 -sign client_private_key.pem -out /shared/signed_challenge.sig decrypted_challenge.txt
 ```
 
-![signed]()
+![signed](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/signed.png)
 
 ## 5. [Server] Verify the signature:
 
@@ -78,14 +79,14 @@ openssl dgst -sha256 -sign client_private_key.pem -out /shared/signed_challenge.
 openssl dgst -sha256 -verify /shared/client_public_key.pem -signature /shared/signed_challenge.sig challenge.txt
 ```
 
-![verified]()
+![verified](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/verified.png)
 
 *Thus, the authentication is successful, and the scheme is complete.*
 
 
 # Task 2. Encrypting large message 
 Create a text file at least 56 bytes. 
-![text]()
+![text](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/text.png)
 <br>
 
 **Question 1**: Encrypt the file with aes-256 cipher in CFB and OFB modes. How do you evaluate both cipher as far as error propagation and adjacent plaintext blocks are concerned. 
