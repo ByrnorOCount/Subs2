@@ -105,7 +105,7 @@ openssl rand -hex 32 > aes_key.key
 openssl rand -hex 16 > aes_iv.key
 ```
 
-![keys](https://github.com/ByrnorOCount/Subs2/blob/main/keys.png)
+![keys](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/keys.png)
 
 *Third, we encrypt the file using AES-256 in CFB Mode:*
 
@@ -119,7 +119,7 @@ openssl enc -aes-256-cfb -in text.txt -out encrypted_cfb.bin -K $(cat aes_key.ke
 openssl enc -aes-256-ofb -in text.txt -out encrypted_ofb.bin -K $(cat aes_key.key) -iv $(cat aes_iv.key)
 ```
 
-![aes-256](https://github.com/ByrnorOCount/Subs2/blob/main/aes-256.png)
+![aes-256](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/aes-256.png)
 
 ## 2. Evaluate
 
@@ -141,11 +141,11 @@ xxd encrypted_cfb.bin > cfb_hex.txt
 xxd encrypted_ofb.bin > ofb_hex.txt
 ```
 
-![xxd](https://github.com/ByrnorOCount/Subs2/blob/main/xxd.png)
+![xxd](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/xxd.png)
 
 *Then, we modify the 8th byte of both files:*
 
-![modified](https://github.com/ByrnorOCount/Subs2/blob/main/modified.png)
+![modified](https://raw.githubusercontent.com/ByrnorOCount/Subs2/refs/heads/main/modified.png)
 
 *Finally, we convert them back to binary:*
 
