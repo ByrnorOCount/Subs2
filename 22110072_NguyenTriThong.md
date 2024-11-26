@@ -92,8 +92,68 @@ Create a text file at least 56 bytes.
 **Question 1**: Encrypt the file with aes-256 cipher in CFB and OFB modes. How do you evaluate both cipher as far as error propagation and adjacent plaintext blocks are concerned. 
 
 **Answer 1**:
+## 1. Encrypt the file
+*First, we generate a 256-bit key:*
+
+```bash
+openssl rand -hex 32 > aes_key.key
+```
+
+*Second, we generate a random 16-byte initialization vector (IV):*
+
+```bash
+openssl rand -hex 16 > aes_iv.key
+```
+
+![keys](https://github.com/ByrnorOCount/Subs2/blob/main/keys.png)
+
+*Third, we encrypt the file using AES-256 in CFB Mode:*
+
+```bash
+openssl enc -aes-256-cfb -in text.txt -out encrypted_cfb.bin -K $(cat aes_key.key) -iv $(cat aes_iv.key)
+```
+
+*Finally, we do the same in OFB Mode:*
+
+```bash
+openssl enc -aes-256-ofb -in text.txt -out encrypted_ofb.bin -K $(cat aes_key.key) -iv $(cat aes_iv.key)
+```
+
+![aes-256](https://github.com/ByrnorOCount/Subs2/blob/main/aes-256.png)
+
+## 2. Evaluate
+
+| Feature           | CFB Mode                         | OFB Mode                       |
+|-------------------|----------------------------------|--------------------------------|
+| Error Propagation | Affects the current & next block | Affects the current block only |
+| Adjacent Blocks   | Dependent on previous ciphertext | Independent                    |
 
 **Question 2**: Modify the 8th byte of encrypted file in both modes (this emulates corrupted ciphertext).
 Decrypt corrupted file, watch the result and give your comment on Chaining dependencies and Error propagation criteria.
+
 **Answer 2**:
+
+## 1. Modify the 8th byte in the encrypted files
+*We use `xxd` to display the Hexadecimal Contents:*
+
+```bash
+xxd encrypted_cfb.bin > cfb_hex.txt
+xxd encrypted_ofb.bin > ofb_hex.txt
+```
+
+![xxd](https://github.com/ByrnorOCount/Subs2/blob/main/xxd.png)
+
+*Then, we modify the 8th byte of both files:*
+
+![modified](https://github.com/ByrnorOCount/Subs2/blob/main/modified.png)
+
+*Finally, we convert them back to binary:*
+
+```bash
+xxd -r cfb_hex.txt modified_cfb.bin
+xxd -r ofb_hex.txt modified_ofb.bin
+```
+
+## 2.
+
 
